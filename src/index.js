@@ -4,6 +4,9 @@ import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
 import path from "path";
 import cors from "cors";
+import { createServer } from "http";
+
+import { initializeSocket } from "./lib/socket.js";
 
 import { connectDB } from "./lib/db.js";
 
@@ -19,6 +22,9 @@ dotenv.config();
 const __dirname = path.resolve();
 const app = express();
 const PORT = process.env.PORT;
+
+const httpServer = createServer(app);
+initializeSocket(httpServer);
 
 app.use(cors({
   origin: "http://localhost:3001",
@@ -49,6 +55,8 @@ app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statsRoutes);
 
+
+
 // App - errors handler
 app.use((error, req, res, next) => {
   res
@@ -62,9 +70,9 @@ app.use((error, req, res, next) => {
 });
 
 // App - Listen server
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
   connectDB();
 });
 
-//todo: socket.io
+

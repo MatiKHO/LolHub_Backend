@@ -4,7 +4,6 @@ import { User } from '../models/user.model.js';
 
 export const authCallback = async(req, res, next) => {
     try {
-        console.log("Received request body:", req.body);
         const { id, firstName, lastName, imageUrl } = req.body;
 
         // check if id is present
@@ -17,7 +16,7 @@ export const authCallback = async(req, res, next) => {
 
         if(!user) {
             // signup
-            console.log("Creating new user...");
+            
             await User.create({
                 clerkId: id,
                 fullName: `${firstName || ""} ${lastName || ""} `.trim(),

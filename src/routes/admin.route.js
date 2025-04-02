@@ -16,7 +16,7 @@ router.delete("/songs/:id", deleteSong);
 
 // Admin - create and delete albums
 router.post("/albums", createAlbum);
-router.post("/albums/:id", deleteAlbum);
+router.delete("/albums/:id", deleteAlbum);
 
 
 export default router;
