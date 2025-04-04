@@ -4,6 +4,7 @@ import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
 import path from "path";
 import cors from "cors";
+import morgan from "morgan";
 import { createServer } from "http";
 
 import { initializeSocket } from "./lib/socket.js";
@@ -16,6 +17,9 @@ import authRoutes from "./routes/auth.route.js";
 import songRoutes from "./routes/song.route.js";
 import albumRoutes from "./routes/album.route.js";
 import statsRoutes from "./routes/stat.route.js";
+import riotRoutes from "./routes/riot.route.js";
+
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 dotenv.config();
 
@@ -30,6 +34,7 @@ app.use(cors({
   origin: "http://localhost:3001",
   credentials: true,
 }));
+app.use(morgan("dev"));
 
 app.use(express.json()); // to parse req.body
 app.use(clerkMiddleware()); // this will add auth to req obj => req.auth.userId
@@ -54,20 +59,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statsRoutes);
+app.use("/api", riotRoutes);
+
 
 
 
 // App - errors handler
-app.use((error, req, res, next) => {
-  res
-    .status(500)
-    .json({
-      message:
-        process.env.NODE_ENV === "production"
-          ? "Internal server error"
-          : error.message,
-    });
-});
+app.use(errorHandler);
 
 // App - Listen server
 httpServer.listen(PORT, () => {
