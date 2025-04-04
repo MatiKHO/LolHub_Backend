@@ -31,7 +31,7 @@ const httpServer = createServer(app);
 initializeSocket(httpServer);
 
 app.use(cors({
-  origin: "https://67f05cc7761fb100081e3065--lolhubofficial.netlify.app",
+  origin: "https://main--lolhubofficial.netlify.app",
   credentials: true,
 }));
 app.use(morgan("dev"));
