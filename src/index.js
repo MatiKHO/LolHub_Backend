@@ -31,7 +31,7 @@ const httpServer = createServer(app);
 initializeSocket(httpServer);
 
 app.use(cors({
-  origin: ["https://lolhubofficial.netlify.app", "https://classic-gelding-76.clerk.accounts.dev"],
+  origin: ["https://lolhubofficial.netlify.app", "https://classic-gelding-76.clerk.accounts.dev", "http://localhost:3001"],
   credentials: true,
 }));
 app.use(morgan("dev"));
@@ -51,8 +51,7 @@ app.use(
 
 
 
-console.log("Clerk Publishable Key:", process.env.CLERK_PUBLISHABLE_KEY);
-console.log("Clerk Secret Key:", process.env.CLERK_SECRET_KEY);
+
 
 // App - Routes
 app.get("/", (req, res) => {
@@ -66,9 +65,6 @@ app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api", riotRoutes);
 
-app.get("/sso-callback", (req, res) => {
-  res.status(200).send("SSO Callback handled successfully.");
-});
 
 
 
