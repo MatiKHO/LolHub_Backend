@@ -31,7 +31,7 @@ const httpServer = createServer(app);
 initializeSocket(httpServer);
 
 app.use(cors({
-  origin: "*",
+  origin: ["https://lolhubofficial.netlify.app", "https://classic-gelding-76.clerk.accounts.dev", "http://localhost:3001"],
   credentials: true,
 }));
 app.use(morgan("dev"));
@@ -49,7 +49,10 @@ app.use(
   })
 ); // to parse file uploads
 
-
+app.use((req, res, next) => {
+  console.log('Request origin:', req.headers.origin);
+  next();
+});
 
 
 
