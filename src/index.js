@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { clerkMiddleware } from "@clerk/express";
+import { clerkMiddleware} from "@clerk/express";
 import fileUpload from "express-fileupload";
 import path from "path";
 import cors from "cors";
@@ -31,7 +31,7 @@ const httpServer = createServer(app);
 initializeSocket(httpServer);
 
 app.use(cors({
-  origin: "https://lolhubofficial.netlify.app",
+  origin: ["https://lolhubofficial.netlify.app", "https://classic-gelding-76.clerk.accounts.dev"],
   credentials: true,
 }));
 app.use(morgan("dev"));
@@ -49,6 +49,11 @@ app.use(
   })
 ); // to parse file uploads
 
+
+
+console.log("Clerk Publishable Key:", process.env.CLERK_PUBLISHABLE_KEY);
+console.log("Clerk Secret Key:", process.env.CLERK_SECRET_KEY);
+
 // App - Routes
 app.get("/", (req, res) => {
   res.send("This is the API");
@@ -60,6 +65,10 @@ app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api", riotRoutes);
+
+app.get("/sso-callback", (req, res) => {
+  res.status(200).send("SSO Callback handled successfully.");
+});
 
 
 
