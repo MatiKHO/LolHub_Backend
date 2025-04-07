@@ -5,7 +5,7 @@ import { Message } from "../models/message.model.js";
 export const initializeSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "https://lolhubofficial.netlify.app",
+      origin: ["https://lolhubofficial.netlify.app", "http://localhost:3001"],
       credentials: true,
     },
   });
@@ -29,13 +29,6 @@ export const initializeSocket = (server) => {
       io.emit("activities", Array.from(userActivities.entries()));
     });
 
-    // socket.on("update_activity", (userId, activity) => {
-    //   console.log("activity updated", userId, activity);
-    //   userActivities.set(userId, activity);
-    //   io.emit("activity_updated", { userId, activity });
-    // });
-
-
     socket.on("update_activity", (userId, activity) => {
       console.log("🔵 Received activity update:", { userId, activity });
     
@@ -53,6 +46,7 @@ export const initializeSocket = (server) => {
 
     socket.on("send_message", async (data) => {
       try {
+        console.log("🔵 Received send_message event:", data);
         const { senderId, receiverId, content } = data;
 
         const message = await Message.create({
@@ -60,10 +54,12 @@ export const initializeSocket = (server) => {
           receiverId,
           content,
         });
+        console.log("🟢 Message saved to database:", message);
 
         // send to receiver in realtime, if they are online
         const receiverSocketId = userSockets.get(receiverId);
         if (receiverSocketId) {
+          console.log("🟢 Sending message to receiver:", receiverId);
           io.to(receiverSocketId).emit("receive_message", message);
         }
 
