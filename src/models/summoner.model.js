@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
 const SummonerSchema = new mongoose.Schema({
- 
+  id: String,
+  accountId: String,
   puuid: String,
   name: String,
   level: Number,

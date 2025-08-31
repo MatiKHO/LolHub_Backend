@@ -4,7 +4,6 @@ import { getRecentMatches, getSummonerByRiotId} from '../controllers/summoner.co
 const router = Router();
 
 
-// Riot - get PUUID by name and tag
 router.get("/summoner/:name/:tag", getSummonerByRiotId);
 router.get("/matches/:puuid", getRecentMatches);
 
