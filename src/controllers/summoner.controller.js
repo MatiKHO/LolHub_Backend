@@ -9,6 +9,12 @@ const BASE_URL_EUROPE = process.env.BASE_URL_EUROPE;
 const BASE_URL_EUW = process.env.BASE_URL_EUW;
 
 export const getSummonerByRiotId = async (req, res, next) => {
+
+    // Debug logs for local debugging (remove in production)
+    console.log('RIOT_API_KEY:', RIOT_API_KEY);
+    console.log('BASE_URL_EUROPE:', BASE_URL_EUROPE);
+    console.log('BASE_URL_EUW:', BASE_URL_EUW);
+
     const { name, tag } = req.params;
     const encodedName = encodeURIComponent(name);
     const encodedTag = encodeURIComponent(tag);
